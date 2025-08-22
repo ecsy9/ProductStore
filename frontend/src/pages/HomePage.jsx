@@ -3,6 +3,7 @@ import { useProductStore } from '../../store/useProductStore';
 import { useEffect } from 'react';
 import { RefreshCwIcon } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
+import AddProductModal from '../components/AddProductModal';
 
 const HomePage = () => {
     const {products,loading,error, fetchProducts} = useProductStore();
@@ -14,7 +15,8 @@ const HomePage = () => {
     return(
         <main className='mx-auto max-w-7xl p-4'>
         <div className='flex justify-between items-center mb-8'>
-            <button className='btn btn-primary'>
+            <button className='btn btn-primary' 
+            onClick={() => document.getElementById("addProductModal").showModal()}>
                 Add Product
             </button>
             <button className='btn btn-ghost' onClick={fetchProducts}>
@@ -22,7 +24,15 @@ const HomePage = () => {
             </button>
         </div>
 
+        <AddProductModal />
+
         {error && <div className='alert alert-error mb-4'>{error}</div>}
+
+        {products.length === 0 && !loading && (
+            <div className='text-center text-gray-500'>
+                <p>No products available.</p>
+            </div>
+        )}
 
         {loading ? (
             <div className='flex justify-center items-center h-64'>
